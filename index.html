@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dava India - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --sidebar-width: 250px;
+            --header-height: 60px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        /* Login Page Styles */
+        .login-container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-logo h2 {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .login-logo p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .btn-login {
+            background-color: var(--secondary-color);
+            color: white;
+            width: 100%;
+            padding: 0.75rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-login:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        /* Admin Panel Styles */
+        .admin-container {
+            display: none;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--primary-color);
+            color: white;
+            transition: all 0.3s;
+            z-index: 1000;
+            box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-header h3 {
+            margin: 0;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .sidebar-menu {
+            padding: 1rem 0;
+            height: calc(100vh - var(--header-height) - 80px);
+            overflow-y: auto;
+        }
+        
+        .sidebar-menu ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .sidebar-menu a {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-left: 3px solid var(--secondary-color);
+        }
+        
+        .sidebar-menu i {
+            margin-right: 0.75rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            margin-left: var(--sidebar-width);
+            padding: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .header {
+            background: white;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin: 0;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.75rem;
+        }
+        
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-bottom: none;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .stats-card i {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .stats-card h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-card p {
+            color: #7f8c8d;
+            margin: 0;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .table thead th {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 1rem;
+        }
+        
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+        
+        .btn-action {
+            padding: 0.25rem 0.5rem;
+            margin: 0 0.25rem;
+            border-radius: 4px;
+            font-size: 0.875rem;
+        }
+        
+        .btn-edit {
+            background: #f39c12;
+            color: white;
+            border: none;
+        }
+        
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+            border: none;
+        }
+        
+        .btn-view {
+            background: #3498db;
+            color: white;
+            border: none;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h3, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                text-align: center;
+                padding: 1rem 0.5rem;
+            }
+            
+            .sidebar-menu i {
+                margin-right: 0;
+                font-size: 1.25rem;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+            
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
+        
+        .logout-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-form">
+            <div class="login-logo">
+                <h2>Dava India</h2>
+                <p>Admin Panel Login</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-login">Login</button>
+            </form>
+            <div class="alert alert-danger mt-3" role="alert" id="loginError" style="display: none;">
+                Invalid username or password. Please try again.
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-container" id="adminPanel">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3>Dava India</h3>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+                    <li><a href="#" data-section="taskDelegation"><i class="fas fa-tasks"></i> <span>Task Delegation</span></a></li>
+                    <li><a href="#" data-section="checklist"><i class="fas fa-clipboard-check"></i> <span>Check List</span></a></li>
+                    <li><a href="#" data-section="purchaseMaster"><i class="fas fa-shopping-cart"></i> <span>Purchase Master</span></a></li>
+                    <li><a href="#" data-section="orderManagement"><i class="fas fa-file-invoice"></i> <span>Order Management</span></a></li>
+                    <li><a href="#" data-section="misReport"><i class="fas fa-chart-bar"></i> <span>MIS Report</span></a></li>
+                    <li><a href="#" data-section="attendanceMaster"><i class="fas fa-user-clock"></i> <span>Attendance Master</span></a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="user-info">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=3498db&color=fff" alt="Admin">
+                    <span>Admin</span>
+                    <button class="logout-btn ms-3" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div class="content-section active" id="dashboard">
+                <div class="dashboard-cards">
+                    <div class="card stats-card">
+                        <i class="fas fa-users"></i>
+                        <h3>1,254</h3>
+                        <p>Total Employees</p>
+                    </div>
+                    <div class="card stats-card">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>542</h3>
+                        <p>Pending Orders</p>
+                    </div>
+                    <div class="card stats-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>₹ 12.5L</h3>
+                        <p>Monthly Revenue</p>
+                    </div>
+                    <div class="card stats-card">
+                        <i class="fas fa-tasks"></i>
+                        <h3>89%</h3>
+                        <p>Task Completion</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Recent Activities</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Activity</th>
+                                                <th>User</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#1254</td>
+                                                <td>Order Placed</td>
+                                                <td>John Doe</td>
+                                                <td>12 May 2023</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>#1253</td>
+                                                <td>Payment Received</td>
+                                                <td>Jane Smith</td>
+                                                <td>11 May 2023</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>#1252</td>
+                                                <td>Product Shipped</td>
+                                                <td>Robert Johnson</td>
+                                                <td>10 May 2023</td>
+                                                <td><span class="badge bg-warning">Pending</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>#1251</td>
+                                                <td>New User Registration</td>
+                                                <td>Sarah Williams</td>
+                                                <td>09 May 2023</td>
+                                                <td><span class="badge bg-success">Completed</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td>#1250</td>
+                                                <td>Inventory Update</td>
+                                                <td>Michael Brown</td>
+                                                <td>08 May 2023</td>
+                                                <td><span class="badge bg-info">In Progress</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">Quick Stats</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <h6>Orders This Month</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 75%">75%</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Tasks Completed</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 60%">60%</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Revenue Target</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 85%">85%</div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h6>Customer Satisfaction</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 90%">90%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task Delegation Section -->
+            <div class="content-section" id="taskDelegation">
+                <h2 class="mb-4">Task Delegation</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Pending Tasks</h5>
+                        </div>
+                        
+
+            <!-- Check List Section -->
+            <div class="content-section" id="checklist">
+                <h2 class="mb-4">Check List</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Daily Checklist</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Check ID</th>
+                                            <th>Check Item</th>
+                                            <th>Department</th>
+                                            <th>Status</th>
+                                            <th>Checked By</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#C001</td>
+                                            <td>System Backup</td>
+                                            <td>IT</td>
+                                            <td><span class="badge bg-success">Completed</span></td>
+                                            <td>John Doe</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#C002</td>
+                                            <td>Inventory Check</td>
+                                            <td>Warehouse</td>
+                                            <td><span class="badge bg-warning">Pending</span></td>
+                                            <td>-</td>
+                                            <td>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Weekly Checklist</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Check ID</th>
+                                            <th>Check Item</th>
+                                            <th>Department</th>
+                                            <th>Status</th>
+                                            <th>Checked By</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#WC001</td>
+                                            <td>Financial Report</td>
+                                            <td>Finance</td>
+                                            <td><span class="badge bg-success">Completed</span></td>
+                                            <td>Jane Smith</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#WC002</td>
+                                            <td>Equipment Maintenance</td>
+                                            <td>Operations</td>
+                                            <td><span class="badge bg-danger">Overdue</span></td>
+                                            <td>-</td>
+                                            <td>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Purchase Master Section -->
+            <div class="content-section" id="purchaseMaster">
+                <h2 class="mb-4">Purchase Master</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Purchase Orders</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>PO ID</th>
+                                            <th>Vendor</th>
+                                            <th>Amount</th>
+                                            <th>Order Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#PO1001</td>
+                                            <td>ABC Suppliers</td>
+                                            <td>₹ 25,000</td>
+                                            <td>10 May 2023</td>
+                                            <td><span class="badge bg-success">Delivered</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#PO1002</td>
+                                            <td>XYZ Traders</td>
+                                            <td>₹ 42,500</td>
+                                            <td>12 May 2023</td>
+                                            <td><span class="badge bg-warning">Pending</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#PO1003</td>
+                                            <td>Global Imports</td>
+                                            <td>₹ 18,750</td>
+                                            <td>14 May 2023</td>
+                                            <td><span class="badge bg-info">In Transit</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Vendor Management</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Vendor ID</th>
+                                            <th>Vendor Name</th>
+                                            <th>Contact</th>
+                                            <th>Products</th>
+                                            <th>Rating</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#V001</td>
+                                            <td>ABC Suppliers</td>
+                                            <td>9876543210</td>
+                                            <td>Raw Materials</td>
+                                            <td>4.5/5</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#V002</td>
+                                            <td>XYZ Traders</td>
+                                            <td>9876543211</td>
+                                            <td>Packaging</td>
+                                            <td>4.2/5</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#V003</td>
+                                            <td>Global Imports</td>
+                                            <td>9876543212</td>
+                                            <td>Machinery</td>
+                                            <td>4.7/5</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Purchase Analytics</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-4 mb-3">
+                                    <h3>₹ 2.5L</h3>
+                                    <p>Monthly Purchase</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h3>42</h3>
+                                    <p>Active Vendors</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h3>18</h3>
+                                    <p>Pending Orders</p>
+                                </div>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%">65% On Time Delivery</div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 85%">85% Quality Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Management Section -->
+            <div class="content-section" id="orderManagement">
+                <h2 class="mb-4">Order Management</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Recent Orders</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Customer</th>
+                                            <th>Amount</th>
+                                            <th>Order Date</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#ORD1001</td>
+                                            <td>John Smith</td>
+                                            <td>₹ 5,250</td>
+                                            <td>15 May 2023</td>
+                                            <td><span class="badge bg-success">Delivered</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#ORD1002</td>
+                                            <td>Emma Johnson</td>
+                                            <td>₹ 8,750</td>
+                                            <td>14 May 2023</td>
+                                            <td><span class="badge bg-warning">Processing</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#ORD1003</td>
+                                            <td>Michael Brown</td>
+                                            <td>₹ 12,500</td>
+                                            <td>13 May 2023</td>
+                                            <td><span class="badge bg-info">Shipped</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Order Statistics</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-4 mb-3">
+                                    <h3>156</h3>
+                                    <p>Total Orders</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h3>₹ 4.2L</h3>
+                                    <p>Revenue</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h3>92%</h3>
+                                    <p>Success Rate</p>
+                                </div>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 75%">75% Delivered</div>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 15%">15% Processing</div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 10%">10% Shipped</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Customer Management</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Customer ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Orders</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#CUST001</td>
+                                            <td>John Smith</td>
+                                            <td>john@example.com</td>
+                                            <td>9876543210</td>
+                                            <td>12</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST002</td>
+                                            <td>Emma Johnson</td>
+                                            <td>emma@example.com</td>
+                                            <td>9876543211</td>
+                                            <td>8</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#CUST003</td>
+                                            <td>Michael Brown</td>
+                                            <td>michael@example.com</td>
+                                            <td>9876543212</td>
+                                            <td>15</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MIS Report Section -->
+            <div class="content-section" id="misReport">
+                <h2 class="mb-4">MIS Report</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Sales Report</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Period</th>
+                                            <th>Revenue</th>
+                                            <th>Orders</th>
+                                            <th>Growth</th>
+                                            <th>Top Product</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>May 2023</td>
+                                            <td>₹ 12.5L</td>
+                                            <td>1,254</td>
+                                            <td><span class="text-success">+12.5%</span></td>
+                                            <td>Product A</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-download"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>April 2023</td>
+                                            <td>₹ 11.1L</td>
+                                            <td>1,115</td>
+                                            <td><span class="text-success">+8.3%</span></td>
+                                            <td>Product C</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-download"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>March 2023</td>
+                                            <td>₹ 10.2L</td>
+                                            <td>1,030</td>
+                                            <td><span class="text-danger">-2.1%</span></td>
+                                            <td>Product B</td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-download"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Financial Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-4 mb-3">
+                                    <h3>₹ 45.8L</h3>
+                                    <p>Total Revenue</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h3>₹ 32.1L</h3>
+                                    <p>Total Expenses</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h3>₹ 13.7L</h3>
+                                    <p>Net Profit</p>
+                                </div>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 70%">70% Revenue Growth</div>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 55%">55% Expense Growth</div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 30%">30% Profit Margin</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Performance Metrics</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Metric</th>
+                                            <th>Current</th>
+                                            <th>Previous</th>
+                                            <th>Change</th>
+                                            <th>Target</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Customer Satisfaction</td>
+                                            <td>92%</td>
+                                            <td>89%</td>
+                                            <td><span class="text-success">+3%</span></td>
+                                            <td>90%</td>
+                                            <td><span class="badge bg-success">Achieved</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Order Fulfillment</td>
+                                            <td>88%</td>
+                                            <td>85%</td>
+                                            <td><span class="text-success">+3%</span></td>
+                                            <td>90%</td>
+                                            <td><span class="badge bg-warning">Near Target</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Employee Productivity</td>
+                                            <td>78%</td>
+                                            <td>75%</td>
+                                            <td><span class="text-success">+3%</span></td>
+                                            <td>80%</td>
+                                            <td><span class="badge bg-warning">Near Target</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Master Section -->
+            <div class="content-section" id="attendanceMaster">
+                <h2 class="mb-4">Attendance Master</h2>
+                <div class="dashboard-cards">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Today's Attendance</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Emp ID</th>
+                                            <th>Name</th>
+                                            <th>Department</th>
+                                            <th>Check In</th>
+                                            <th>Check Out</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#EMP001</td>
+                                            <td>John Doe</td>
+                                            <td>Sales</td>
+                                            <td>09:05 AM</td>
+                                            <td>06:15 PM</td>
+                                            <td><span class="badge bg-success">Present</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#EMP002</td>
+                                            <td>Jane Smith</td>
+                                            <td>Marketing</td>
+                                            <td>09:15 AM</td>
+                                            <td>-</td>
+                                            <td><span class="badge bg-info">Working</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#EMP003</td>
+                                            <td>Robert Johnson</td>
+                                            <td>IT</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td><span class="badge bg-danger">Absent</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Attendance Summary</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-md-4 mb-3">
+                                    <h3>92%</h3>
+                                    <p>Present</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h3>5%</h3>
+                                    <p>Absent</p>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <h3>3%</h3>
+                                    <p>Late</p>
+                                </div>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 92%">92% Present</div>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 5%">5% Absent</div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: 3%">3% Late</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Employee Leave Records</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Emp ID</th>
+                                            <th>Name</th>
+                                            <th>Leave Type</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>#EMP005</td>
+                                            <td>Sarah Williams</td>
+                                            <td>Sick Leave</td>
+                                            <td>15 May 2023</td>
+                                            <td>16 May 2023</td>
+                                            <td><span class="badge bg-success">Approved</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#EMP007</td>
+                                            <td>Michael Brown</td>
+                                            <td>Casual Leave</td>
+                                            <td>18 May 2023</td>
+                                            <td>19 May 2023</td>
+                                            <td><span class="badge bg-warning">Pending</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>#EMP012</td>
+                                            <td>David Wilson</td>
+                                            <td>Annual Leave</td>
+                                            <td>22 May 2023</td>
+                                            <td>26 May 2023</td>
+                                            <td><span class="badge bg-info">Applied</span></td>
+                                            <td>
+                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
+                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Login functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginError = document.getElementById('loginError');
+            
+            if (username === 'Admin' && password === '1234') {
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+            } else {
+                loginError.style.display = 'block';
+            }
+        });
+        
+        // Navigation functionality
+        const navLinks = document.querySelectorAll('.sidebar-menu a');
+        const contentSections = document.querySelectorAll('.content-section');
+        const pageTitle = document.getElementById('pageTitle');
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links and sections
+                navLinks.forEach(l => l.classList.remove('active'));
+                contentSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).classList.add('active');
+                
+                // Update page title
+                pageTitle.textContent = this.querySelector('span').textContent;
+                
+                // Close mobile menu if open
+                if (window.innerWidth <= 576) {
+                    document.getElementById('overlay').classList.remove('active');
+                    document.querySelector('.sidebar').style.width = '0';
+                }
+            });
+        });
+        
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const overlay = document.getElementById('overlay');
+        const sidebar = document.querySelector('.sidebar');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            sidebar.style.width = '250px';
+            overlay.classList.add('active');
+        });
+        
+        overlay.addEventListener('click', function() {
+            sidebar.style.width = '0';
+            this.classList.remove('active');
+        });
+        
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('loginError').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
