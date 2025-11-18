@@ -289,6 +289,27 @@
             border: none;
         }
         
+        /* External Link Card */
+        .external-link-card {
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .external-link-card::after {
+            content: "\f35d";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            color: white;
+            opacity: 0.8;
+        }
+        
+        .external-link-card:hover::after {
+            opacity: 1;
+        }
+        
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .sidebar {
@@ -556,10 +577,9 @@
             <div class="content-section" id="taskDelegation">
                 <h2 class="mb-4">Task Delegation</h2>
                 <div class="dashboard-cards">
-                    <div class="card">
+                    <div class="card external-link-card" onclick="window.open('https://script.google.com/macros/s/AKfycbzUjEFdb7RMvW6dw6gUUG4naSDsd6xuLxuCtcCKmJBoiM_488IF7lkoC7JH_-jAc1m3Tg/exec', '_blank')">
                         <div class="card-header">
-                            <h5 class="mb-0">Pending Tasks</h5>
-                        </div>
+                            <h5 class="mb-0">Login To App</h5>
                         
 
             <!-- Check List Section -->
