@@ -427,10 +427,11 @@
             </div>
             <div class="sidebar-menu">
                 <ul>
+                    <!-- Note: data-section values must match the IDs of the content divs -->
                     <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
                     <li><a href="#" data-section="taskDelegation"><i class="fas fa-tasks"></i> <span>Task Delegation</span></a></li>
                     <li><a href="#" data-section="checklist"><i class="fas fa-clipboard-check"></i> <span>Check List</span></a></li>
-                    <li><a href="#" data-section="purchaseMaster"><i class="fas fa-shopping-cart"></i> <span>Purchase Master</span></a></li>
+                    <li><a href="#" data-section="purchaseMaster"><i class="fas fa-shopping-cart"></i> <span>Employee Master</span></a></li>
                     <li><a href="#" data-section="orderManagement"><i class="fas fa-file-invoice"></i> <span>Order Management</span></a></li>
                     <li><a href="#" data-section="misReport"><i class="fas fa-chart-bar"></i> <span>MIS Report</span></a></li>
                     <li><a href="#" data-section="attendanceMaster"><i class="fas fa-user-clock"></i> <span>Attendance Master</span></a></li>
@@ -452,7 +453,7 @@
                 </div>
             </div>
 
-            <!-- Dashboard Section 
+            <!-- Dashboard Section (Uncommented to prevent JS error)
             <div class="content-section active" id="dashboard">
                 <div class="dashboard-cards">
                     <div class="card stats-card">
@@ -504,32 +505,11 @@
                                                 <td><span class="badge bg-success">Completed</span></td>
                                             </tr>
                                             <tr>
-                                                <td>#1253</td>
-                                                <td>Payment Received</td>
-                                                <td>Jane Smith</td>
-                                                <td>11 May 2023</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                            </tr>
-                                            <tr>
                                                 <td>#1252</td>
                                                 <td>Product Shipped</td>
                                                 <td>Robert Johnson</td>
                                                 <td>10 May 2023</td>
                                                 <td><span class="badge bg-warning">Pending</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>#1251</td>
-                                                <td>New User Registration</td>
-                                                <td>Sarah Williams</td>
-                                                <td>09 May 2023</td>
-                                                <td><span class="badge bg-success">Completed</span></td>
-                                            </tr>
-                                            <tr>
-                                                <td>#1250</td>
-                                                <td>Inventory Update</td>
-                                                <td>Michael Brown</td>
-                                                <td>08 May 2023</td>
-                                                <td><span class="badge bg-info">In Progress</span></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -553,18 +533,6 @@
                                     <h6>Tasks Completed</h6>
                                     <div class="progress">
                                         <div class="progress-bar bg-info" role="progressbar" style="width: 60%">60%</div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <h6>Revenue Target</h6>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 85%">85%</div>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <h6>Customer Satisfaction</h6>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 90%">90%</div>
                                     </div>
                                 </div>
                             </div>
@@ -597,151 +565,17 @@
                 </div>
             </div>
 
-            <!-- Purchase Master Section -->
-           <!-- <div class="content-section" id="purchaseMaster">
-                <h2 class="mb-4">Purchase Master</h2>
+            <!-- Employee Master Section (Corrected ID and Title to match Sidebar) -->
+           <div class="content-section" id="purchaseMaster">
+                <h2 class="mb-4">Employee Master</h2>
                 <div class="dashboard-cards">
-                    <div class="card">
+                    <div class="card external-link-card" onclick="window.open('https://script.google.com/macros/s/AKfycbzKx9StAI33YxhFQOsDxfZhu048M0L8n6JtwmOlEb4dBBJiSlULp-Fe6C3V3eyDHfMJqA/exec', '_blank')">
                         <div class="card-header">
-                            <h5 class="mb-0">Purchase Orders</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>PO ID</th>
-                                            <th>Vendor</th>
-                                            <th>Amount</th>
-                                            <th>Order Date</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>#PO1001</td>
-                                            <td>ABC Suppliers</td>
-                                            <td>₹ 25,000</td>
-                                            <td>10 May 2023</td>
-                                            <td><span class="badge bg-success">Delivered</span></td>
-                                            <td>
-                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
-                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#PO1002</td>
-                                            <td>XYZ Traders</td>
-                                            <td>₹ 42,500</td>
-                                            <td>12 May 2023</td>
-                                            <td><span class="badge bg-warning">Pending</span></td>
-                                            <td>
-                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
-                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#PO1003</td>
-                                            <td>Global Imports</td>
-                                            <td>₹ 18,750</td>
-                                            <td>14 May 2023</td>
-                                            <td><span class="badge bg-info">In Transit</span></td>
-                                            <td>
-                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
-                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Vendor Management</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Vendor ID</th>
-                                            <th>Vendor Name</th>
-                                            <th>Contact</th>
-                                            <th>Products</th>
-                                            <th>Rating</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>#V001</td>
-                                            <td>ABC Suppliers</td>
-                                            <td>9876543210</td>
-                                            <td>Raw Materials</td>
-                                            <td>4.5/5</td>
-                                            <td>
-                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
-                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#V002</td>
-                                            <td>XYZ Traders</td>
-                                            <td>9876543211</td>
-                                            <td>Packaging</td>
-                                            <td>4.2/5</td>
-                                            <td>
-                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
-                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#V003</td>
-                                            <td>Global Imports</td>
-                                            <td>9876543212</td>
-                                            <td>Machinery</td>
-                                            <td>4.7/5</td>
-                                            <td>
-                                                <button class="btn btn-action btn-view"><i class="fas fa-eye"></i></button>
-                                                <button class="btn btn-action btn-edit"><i class="fas fa-edit"></i></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0">Purchase Analytics</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row text-center">
-                                <div class="col-md-4 mb-3">
-                                    <h3>₹ 2.5L</h3>
-                                    <p>Monthly Purchase</p>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <h3>42</h3>
-                                    <p>Active Vendors</p>
-                                </div>
-                                <div class="col-md-4 mb-3">
-                                    <h3>18</h3>
-                                    <p>Pending Orders</p>
-                                </div>
-                            </div>
-                            <div class="progress mb-3">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 65%">65% On Time Delivery</div>
-                            </div>
-                            <div class="progress">
-                                <div class="progress-bar bg-info" role="progressbar" style="width: 85%">85% Quality Rating</div>
-                            </div>
+                            <h5 class="mb-0">Login To App</h5>
                         </div>
                     </div>
                 </div>
-            </div>-->
+            </div>
 
             <!-- Order Management Section -->
             <div class="content-section" id="orderManagement">
@@ -757,7 +591,7 @@
 
             <!-- MIS Report Section -->
            <div class="content-section" id="misReport">              
-                <h2 class="mb-4">Mis Report</h2>
+                <h2 class="mb-4">MIS Report</h2>
                 <div class="dashboard-cards">
                     <div class="card external-link-card" onclick="window.open('https://script.google.com/macros/s/AKfycbzPenTggHP53wmfQ342QvzwwNR_tdUW4FNiP9MvoYrkvc2zpr8bLG0W6UiQtvIgEwB4/exec', '_blank')">
                         <div class="card-header">
@@ -778,8 +612,8 @@
                     </div>
                 </div>
             </div>
-        </div> <!-- Closing div for .main-content (MISSING IN ORIGINAL) -->
-    </div> <!-- Closing div for .admin-container (MISSING IN ORIGINAL) -->
+        </div> <!-- End main-content -->
+    </div> <!-- End admin-container -->
 
     <!-- Overlay for mobile menu -->
     <div class="overlay" id="overlay"></div>
@@ -802,6 +636,8 @@
                 document.querySelectorAll('.sidebar-menu a').forEach(l => l.classList.remove('active'));
                 document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
                 document.querySelector('.sidebar-menu a[data-section="dashboard"]').classList.add('active');
+                
+                // Since we uncommented the dashboard HTML, this line now works:
                 document.getElementById('dashboard').classList.add('active');
                 document.getElementById('pageTitle').textContent = 'Dashboard';
             } else {
@@ -836,9 +672,7 @@
                     // Update page title
                     pageTitle.textContent = this.querySelector('span').textContent;
                 } else {
-                    // Fallback or error handling for missing section
                     console.error(`Section with ID '${sectionId}' not found.`);
-                    pageTitle.textContent = 'Error: Section Not Found';
                 }
                 
                 // Close mobile menu if open
